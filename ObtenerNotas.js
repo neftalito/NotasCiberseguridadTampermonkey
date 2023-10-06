@@ -2,7 +2,7 @@
 // @name         Mostrar Notas
 // @namespace    http://tampermonkey.net/
 // @license MIT
-// @version      0.1.1
+// @version      0.1.2
 // @description  Script para mostrar las notas actuales de todos los usuarios en el scoreboard del CTFd.
 // @author       Neftalí Toledo
 // @match        https://ic.catedras.linti.unlp.edu.ar/scoreboard
@@ -42,7 +42,7 @@
     const columnaNotas = document.createElement("td");
     columnaNotas.setAttribute("scope", "col");
     columnaNotas.innerHTML = "<b>Notas</b>";
-    columnaNotas.filas[0].appendChild(columnaNotas);
+    filas[0].appendChild(columnaNotas);
 
     // Obtener las notas de cada usuario
     const userPromises = [];
