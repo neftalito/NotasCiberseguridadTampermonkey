@@ -2,12 +2,14 @@
 // @name         Mostrar Notas
 // @namespace    http://tampermonkey.net/
 // @version      0.1
-// @description  try to take over the world!
-// @author       You
+// @description  Script para mostrar las notas actuales de todos los usuarios en el scoreboard del CTFd.
+// @author       Neftalí Toledo
 // @match        https://ic.catedras.linti.unlp.edu.ar/scoreboard
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=edu.ar
 // @grant        none
 // @run-at       document-end
+// @updateURL    https://raw.githubusercontent.com/neftalito/NotasCiberseguridadTampermonkey/main/ObtenerNotas.js
+// @downloadURL  https://raw.githubusercontent.com/neftalito/NotasCiberseguridadTampermonkey/main/ObtenerNotas.js
 // ==/UserScript==
 
 (async function() {
