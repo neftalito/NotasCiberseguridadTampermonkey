@@ -2,7 +2,7 @@
 // @name         Mostrar Notas
 // @namespace    http://tampermonkey.net/
 // @license MIT
-// @version      0.1.3
+// @version      0.1.4
 // @description  Script para mostrar las notas actuales de todos los usuarios en el scoreboard del CTFd.
 // @author       Neftalí Toledo
 // @match        https://ic.catedras.linti.unlp.edu.ar/scoreboard
@@ -19,7 +19,7 @@
     const RETOS_ENDPOINT = "https://ic.catedras.linti.unlp.edu.ar/api/v1/challenges"
 
     async function obtenerRetosResueltos(user) {
-        const req = await fetch(ENDPOINT.replace("USER_ID", user));
+        const req = ENDPOINT.replace("USER_ID", user);
         const response = await fetch(req);
         const data = await response.json();
         return data;
@@ -49,7 +49,7 @@
     for (let i = 1; i < filas.length; i++) {
         //A veces este link cambia a "https://ic.catedras.linti.unlp.edu.ar/teams/" en vez de "https://ic.catedras.linti.unlp.edu.ar/users/"
         // No se por qué pasa
-        const userID = filas[i].querySelector("td a").href.replace("https://ic.catedras.linti.unlp.edu.ar/users/", ""); 
+        const userID = parseInt(filas[i].querySelector("td a").href.replace("https://ic.catedras.linti.unlp.edu.ar/users/", ""));
         userPromises.push(obtenerRetosResueltos(userID));
     }
 
@@ -62,5 +62,5 @@
         const promedio = obtenerPromedio(userNotes[i - 1].data.length, cantRetos);
         elementoNota.innerHTML = parseFloat(promedio).toPrecision(3);
         filas[i].appendChild(elementoNota);
-    }    
+    }
 })();
