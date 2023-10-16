@@ -2,8 +2,8 @@
 // @name         Mostrar Notas
 // @namespace    http://tampermonkey.net/
 // @license      MIT
-// @version      0.1.53
-// @description  Script para mostrar las notas actuales de todos los usuarios en el scoreboard del CTFd.
+// @version      0.1.54
+// @description  Script para mostrar las notas actuales de todos los usuarios en el scoreboard del CTFd. (TODO: Manejo de errores en las requests)
 // @author       Neftalí Toledo
 // @match        https://ic.catedras.linti.unlp.edu.ar/scoreboard
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=edu.ar
@@ -59,30 +59,22 @@
 
     function filtrarDesafios(data, total = false) {
         const result = {};
+    
         data.forEach(item => {
-            let categoria, dificultad;
-
-            if(total){
-                categoria  = item.category.split(" - ")[0];
-                dificultad = item.category.split(" - ")[1];
-            }else{
-                categoria  = item.challenge.category.split(" - ")[0];
-                dificultad = item.challenge.category.split(" - ")[1];
-            }  
-
+            const categoryKey = total ? item.category : item.challenge.category;
+            const [categoria, dificultad] = categoryKey.split(" - ");
+    
             result[categoria] = result[categoria] || {};
-
-            result[categoria][dificultad] = result[categoria][dificultad] || 0;
-
-            result[categoria][dificultad]++;
-
+            result[categoria][dificultad] = (result[categoria][dificultad] || 0) + 1;
         });
+    
         return result;
     }
     
     // Funcion para eliminar las categorias que no cuentan hacia la nota
-    function excluirCategorias(categorias){
-        return categorias.filter(categoria => !categoriasExcluidas.includes(categoria));
+    function excluirCategorias(categorias) {
+        const categoriasExcluidasSet = new Set(categoriasExcluidas); // Se convierte en Set por eficiencia para muchas categorías excluidas
+        return categorias.filter(categoria => !categoriasExcluidasSet.has(categoria));
     }
 
     // Obtener la cantidad de retos resueltos por el usuario
@@ -97,24 +89,22 @@
 
     // Obtener nota para cada practica
     function obtenerNotas(data) {
-        const retos_resueltos = filtrarDesafios(data)
-        const notas = [];
-
-        const categorias = excluirCategorias(Object.keys(retos_resueltos))
-
-        categorias.forEach(categoria => {
-            const dificultades = Object.keys(retos_resueltos[categoria]);
-
-            if(dificultades.length >= 1){
+        const retos_resueltos = filtrarDesafios(data);
+        const categorias = excluirCategorias(Object.keys(retos_resueltos));
+        
+        const notas = categorias
+            .filter(categoria => Object.keys(retos_resueltos[categoria]).length > 0)
+            .map(categoria => {
                 const cantidadEasy = retos_resueltos[categoria]["Easy"] || 0;
                 const cantidadMedium = retos_resueltos[categoria]["Medium"] || 0;
                 const cantidadHard = retos_resueltos[categoria]["Hard"] || 0;
-
+                
                 const promedioPonderado = calcularPromedioPonderado(cantidadEasy, cantidadMedium, cantidadHard, categoria);
-                notas.push(categoria +": " + parseFloat(promedioPonderado).toPrecision(3) +"\n");
-            }
-        });
-        return notas.reverse().join("<br>"); // Reverse para seguir el orden de mayor > menor. Y el join para los newline en html
+                return `${categoria}: ${parseFloat(promedioPonderado).toPrecision(3)}`;
+            })
+            .reverse().join("<br>");
+    
+        return notas;
     }
 
     // Obtener el total de retos por categoría
