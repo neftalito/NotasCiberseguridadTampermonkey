@@ -5,4 +5,4 @@ https://greasyfork.org/es/scripts/476838-mostrar-notas
 
 Se requiere de la extension https://www.tampermonkey.net/
 
-![image](https://github.com/neftalito/NotasCiberseguridadTampermonkey/assets/47830827/aa42767d-04b3-4f93-a4ff-02d1c0624a2f)
+![image](https://github.com/neftalito/NotasCiberseguridadTampermonkey/assets/47830827/0fae3be3-e82c-4c84-8af4-d50d9b969a6a)
