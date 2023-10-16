@@ -33,7 +33,8 @@
         "Practica-0_Scripting"
     ]
 
-    //Funciones para el promedio
+    //Promedio
+
     function calcularPromedioPonderado(cantidadEasy, cantidadMedium, cantidadHard, categoria) {
         // Calcula la suma ponderada
         const promedioEasy = calcularPromedio(cantidadEasy, valoresTotales[categoria]["Easy"] || 1);
@@ -47,15 +48,7 @@
         return (retos_resueltos / total);
     }
 
-    //Funciones para filtrar los desafíos
-
-    function filtrarDesafiosPorCategoria(data, category) {
-        return data.filter(item => item.challenge.category.includes(category));
-    }
-    
-    function filtrarDesafiosPorCategoriaYPractica(data, category, practice) {
-        return data.filter(item => item.challenge.category.includes(practice + " - " + category));
-    }
+    // Filtros
 
     function filtrarDesafios(data, total = false) {
         const result = {};
@@ -71,7 +64,8 @@
         return result;
     }
     
-    // Funcion para eliminar las categorias que no cuentan hacia la nota
+    // Exclusiones
+
     function excluirCategorias(categorias) {
         const categoriasExcluidasSet = new Set(categoriasExcluidas); // Se convierte en Set por eficiencia para muchas categorías excluidas
         return categorias.filter(categoria => !categoriasExcluidasSet.has(categoria));
@@ -88,6 +82,7 @@
     }
 
     // Obtener nota para cada practica
+
     function obtenerNotas(data) {
         const retos_resueltos = filtrarDesafios(data);
         const categorias = excluirCategorias(Object.keys(retos_resueltos));
