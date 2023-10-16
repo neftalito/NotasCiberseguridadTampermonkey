@@ -2,7 +2,7 @@
 // @name         Mostrar Notas
 // @namespace    http://tampermonkey.net/
 // @license      MIT
-// @version      0.1.55
+// @version      0.1.551
 // @description  Script para mostrar las notas actuales de todos los usuarios en el scoreboard del CTFd. (TODO: Manejo de errores en las requests)
 // @author       Neftalí Toledo
 // @match        https://ic.catedras.linti.unlp.edu.ar/scoreboard
