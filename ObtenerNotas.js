@@ -2,7 +2,7 @@
 // @name         Mostrar Notas
 // @namespace    http://tampermonkey.net/
 // @license      MIT
-// @version      0.1.5
+// @version      0.1.51
 // @description  Script para mostrar las notas actuales de todos los usuarios en el scoreboard del CTFd.
 // @author       Neftalí Toledo
 // @match        https://ic.catedras.linti.unlp.edu.ar/scoreboard
@@ -15,16 +15,17 @@
 
 (async function() {
     'use strict';
+    
     const ENDPOINT = "https://ic.catedras.linti.unlp.edu.ar/api/v1/users/USER_ID/solves";
     const RETOS_ENDPOINT = "https://ic.catedras.linti.unlp.edu.ar/api/v1/challenges"
 
     // Define los valores de suma correspondientes a cada categoría para el promedio ponderado
-    const cantidad_dificultades = 3;
+    //const cantidad_dificultades = 3; (SIN USO)
     const valorEasy = 4;
     const valorMedium = 3;
     const valorHard = 3;
 
-    const valoresTotales = await obtenerValoresTotales();
+    const valoresTotales = await obtenerValoresTotales(); //Obtiene los totales para calcular el promedio
 
     // Categorias que no se van a tener en cuenta para el calculo de la nota
     const categoriasExcluidas = [
@@ -121,7 +122,7 @@
                 notas.push(categoria +": " + parseFloat(promedioPonderado).toPrecision(3) +"\n");
             }
         });
-        return notas;
+        return notas.reverse().join("<br>"); // Reverse para seguir el orden de mayor > menor. Y el join para los newline en html
     }
 
     // Obtener el total de retos por categoría
@@ -158,13 +159,9 @@
     for (let i = 1; i < filas.length; i++) {
         const elementoNota = document.createElement("td");
         const notas = obtenerNotas(userNotes[i - 1].data);
-        if(notas.length == 0){
-            elementoNota.innerHTML = "No resolvió ningún reto"
-        }else{
-            notas.forEach((item) => {
-                elementoNota.innerHTML = item + "<br>" + elementoNota.innerHTML;
-            })
-        }
+
+        elementoNota.innerHTML = notas || "No resolvió ningún reto";
+
         filas[i].appendChild(elementoNota);
     }
 })();
