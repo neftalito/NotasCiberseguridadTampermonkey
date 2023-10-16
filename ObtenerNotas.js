@@ -2,7 +2,7 @@
 // @name         Mostrar Notas
 // @namespace    http://tampermonkey.net/
 // @license      MIT
-// @version      0.1.54
+// @version      0.1.55
 // @description  Script para mostrar las notas actuales de todos los usuarios en el scoreboard del CTFd. (TODO: Manejo de errores en las requests)
 // @author       Neftalí Toledo
 // @match        https://ic.catedras.linti.unlp.edu.ar/scoreboard
@@ -137,13 +137,16 @@
     // Esperar a que se resuelvan todas las promesas
     const userNotes = await Promise.all(userPromises);
 
+    // Construir notas como una cadena HTML
+    const notasHTML = userNotes.map(userNote => {
+        const notas = obtenerNotas(userNote.data);
+        return notas || "No resolvió ningún reto";
+    });
+
     // Añadir notas a cada fila
     for (let i = 1; i < filas.length; i++) {
         const elementoNota = document.createElement("td");
-        const notas = obtenerNotas(userNotes[i - 1].data);
-
-        elementoNota.innerHTML = notas || "No resolvió ningún reto";
-
+        elementoNota.innerHTML = notasHTML[i - 1];
         filas[i].appendChild(elementoNota);
     }
 })();
