@@ -2,7 +2,7 @@
 // @name         Mostrar Notas
 // @namespace    http://tampermonkey.net/
 // @license      MIT
-// @version      0.1.52
+// @version      0.1.53
 // @description  Script para mostrar las notas actuales de todos los usuarios en el scoreboard del CTFd.
 // @author       Neftalí Toledo
 // @match        https://ic.catedras.linti.unlp.edu.ar/scoreboard
@@ -40,14 +40,7 @@
         const promedioMedium = calcularPromedio(cantidadMedium, valoresTotales[categoria]["Medium"] || 1);
         const promedioHard = calcularPromedio(cantidadHard, valoresTotales[categoria]["Hard"] || 1);
 
-        const sumaPonderada = (promedioEasy * valorEasy + promedioMedium * valorMedium + promedioHard * valorHard);
-      
-        // Calcula el promedio ponderado
-        cantidadEasy = valoresTotales[categoria]["Easy"];
-        cantidadMedium = valoresTotales[categoria]["Medium"];
-        cantidadHard = valoresTotales[categoria]["Hard"];
-
-        return sumaPonderada;
+        return (promedioEasy * valorEasy + promedioMedium * valorMedium + promedioHard * valorHard);
     }
 
     function calcularPromedio(retos_resueltos, total) {
