@@ -47,7 +47,7 @@
         cantidadMedium = valoresTotales[categoria]["Medium"];
         cantidadHard = valoresTotales[categoria]["Hard"];
 
-        const promedioPonderado = sumaPonderada*100 / 100;
+        const promedioPonderado = sumaPonderada;
         return promedioPonderado;
     }
 
